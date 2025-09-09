@@ -23,7 +23,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.slider.RangeSlider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import vn.nms.videokit.videokit.VideoKit
+import vn.nms.videokit.android.VideoKit
 import java.io.File
 import java.io.FileOutputStream
 

@@ -1,4 +1,4 @@
-package vn.nms.videokit.videokit
+package vn.nms.videokit.android
 
 import org.junit.Test
 

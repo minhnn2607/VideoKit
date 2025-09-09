@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "vn.nms.videokit.videokit"
+    namespace = "vn.nms.videokit.android"
     compileSdk = 36
 
     defaultConfig {

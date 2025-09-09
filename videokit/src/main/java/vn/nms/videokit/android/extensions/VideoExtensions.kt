@@ -1,8 +1,5 @@
-package vn.nms.videokit.videokit.extensions
+package vn.nms.videokit.android.extensions
 
-import android.Manifest
-import android.os.Build
-import androidx.fragment.app.FragmentActivity
 import com.arthenica.ffmpegkit.Session
 import java.util.Locale
 

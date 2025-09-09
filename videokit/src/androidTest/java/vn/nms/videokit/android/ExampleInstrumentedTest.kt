@@ -1,4 +1,4 @@
-package vn.nms.videokit.videokit
+package vn.nms.videokit.android
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

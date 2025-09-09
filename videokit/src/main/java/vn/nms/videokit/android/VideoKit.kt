@@ -1,11 +1,11 @@
-package vn.nms.videokit.videokit
+package vn.nms.videokit.android
 
 import android.content.Context
 import com.arthenica.ffmpegkit.FFmpegKit
 import com.arthenica.ffmpegkit.FFprobeKit
 import com.arthenica.ffmpegkit.ReturnCode
-import vn.nms.videokit.videokit.extensions.formatMilliSecondToTime
-import vn.nms.videokit.videokit.extensions.getErrorLog
+import vn.nms.videokit.android.extensions.formatMilliSecondToTime
+import vn.nms.videokit.android.extensions.getErrorLog
 import java.io.File
 import kotlin.text.isNullOrEmpty
 
@@ -30,7 +30,7 @@ object VideoKit {
         onError: (String) -> Unit
     ) {
         if (input.isNullOrEmpty() || output.isNullOrEmpty()) {
-            onError("Invalid file path")
+            onError("Invalid file")
             return
         }
         val startTimeFormatted = startTime.formatMilliSecondToTime()
@@ -56,9 +56,8 @@ object VideoKit {
         context: Context,
         input: List<String>, output: String?, onSuccess: () -> Unit, onError: (String) -> Unit
     ) {
-        if (input.size <= 1) onError("Invalid size")
-        if (output.isNullOrEmpty() || input.any { it.isEmpty() }) {
-            onError("Invalid file path")
+        if (input.size <= 1 || output.isNullOrEmpty() || input.any { it.isEmpty() }) {
+            onError("Invalid file")
             return
         }
         val codecName = getCodecName(input.first())
