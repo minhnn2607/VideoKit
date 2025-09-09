@@ -6,6 +6,7 @@ import com.arthenica.ffmpegkit.FFprobeKit
 import com.arthenica.ffmpegkit.ReturnCode
 import vn.nms.videokit.videokit.extensions.formatMilliSecondToTime
 import vn.nms.videokit.videokit.extensions.getErrorLog
+import java.io.File
 import kotlin.text.isNullOrEmpty
 
 object VideoKit {
@@ -52,6 +53,7 @@ object VideoKit {
     }
 
     fun joinVideo(
+        context: Context,
         input: List<String>, output: String?, onSuccess: () -> Unit, onError: (String) -> Unit
     ) {
         if (input.size <= 1) onError("Invalid size")
@@ -61,16 +63,21 @@ object VideoKit {
         }
         val codecName = getCodecName(input.first())
         val videoTag = getVideoTag(codecName)
+        val concatFile =
+            File(context.filesDir.absolutePath + "/" + "concat_" + System.currentTimeMillis() + ".txt")
+        val fileListString = input.joinToString(separator = "\n") { "file '%s'".format(it) }
+        concatFile.writeText(fileListString)
+
         val command =
             if (videoTag.isNotEmpty()) {
-                "-max_reload 1 -y -i concat:%s -c:v copy -c:a copy -tag:v %s %s".format(
-                    input.joinToString(separator = "|"),
+                "-f concat -safe 0 -i %s -c:v copy -c:a copy -tag:v %s %s".format(
+                    concatFile,
                     videoTag,
                     output
                 )
             } else {
-                "-max_reload 1 -y -i concat:%s -c:v copy -c:a copy %s".format(
-                    input.joinToString(separator = "|"),
+                "-f concat -safe 0 -i %s -c:v copy -c:a copy %s".format(
+                    concatFile,
                     output
                 )
             }

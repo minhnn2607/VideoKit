@@ -132,29 +132,49 @@ class MainActivity : AppCompatActivity() {
             btnPlay2?.visibility = View.GONE
         }
         findViewById<Button>(R.id.btnTrim).setOnClickListener {
-            btnJoin?.text = "Processing"
-            val output = filesDir.absolutePath + "/" + System.currentTimeMillis() + ".mp4"
+            btnTrim?.text = "Processing"
+            val output =
+                filesDir.absolutePath + "/" + "output_" + System.currentTimeMillis() + ".mp4"
             VideoKit.trimVideo(
                 selectedVideo,
                 output,
-                videoSlider?.values?.firstOrNull()?.toLong()?:0L,
-                videoSlider?.values?.lastOrNull()?.toLong()?:0L,
+                videoSlider?.values?.firstOrNull()?.toLong() ?: 0L,
+                videoSlider?.values?.lastOrNull()?.toLong() ?: 0L,
                 onSuccess = {
-                    lifecycleScope.launch(Dispatchers.Main){
+                    lifecycleScope.launch(Dispatchers.Main) {
                         tvOutput1?.text = output
-                        btnJoin?.text = "Trim"
+                        btnTrim?.text = "Trim"
                         btnPlay1?.visibility = View.VISIBLE
                     }
                 },
                 onError = {
-                    lifecycleScope.launch(Dispatchers.Main){
-                        btnJoin?.text = "Trim"
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        btnTrim?.text = "Trim"
                         Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
                     }
                 })
         }
         findViewById<Button>(R.id.btnJoin).setOnClickListener {
-
+            btnJoin?.text = "Processing"
+            val output =
+                filesDir.absolutePath + "/" + "output_" + System.currentTimeMillis() + ".mp4"
+            VideoKit.joinVideo(
+                this,
+                selectedVideos,
+                output,
+                onSuccess = {
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        tvOutput2?.text = output
+                        btnJoin?.text = "Join"
+                        btnPlay2?.visibility = View.VISIBLE
+                    }
+                },
+                onError = {
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        btnJoin?.text = "Join"
+                        Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
+                    }
+                })
         }
         findViewById<Button>(R.id.btnPlay1).setOnClickListener {
             val intent = Intent(this, PlayerActivity::class.java)
@@ -162,7 +182,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         findViewById<Button>(R.id.btnPlay2).setOnClickListener {
-
+            val intent = Intent(this, PlayerActivity::class.java)
+            intent.putExtra("videoPath", tvOutput2?.text.toString())
+            startActivity(intent)
         }
         checkAndRequestStoragePermission()
     }
